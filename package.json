@@ -1,0 +1,20 @@
+{
+  "name": "xfx",
+  "version": "0.0.1",
+  "description": "extreme fantasy extended",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pcg",
+    "fantasy",
+    "game"
+  ],
+  "author": "Gustav Jansson",
+  "license": "Zlib",
+  "dependencies": {
+    "tracery-grammar": "^2.7.4"
+  }
+}
