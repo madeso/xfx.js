@@ -5,7 +5,7 @@ import { Container, Row, Button, Col, Navbar, Nav, ButtonGroup, Form } from 'rea
 
 import * as game from './game'
 
-const MonsterFight = (props: { monster: game.Monster }) => {
+const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, onAttack:()=>void}) => {
     return (
         <>
 
@@ -24,22 +24,53 @@ const MonsterFight = (props: { monster: game.Monster }) => {
                     <Col sm="10">
                         <Form.Control type="text" placeholder={props.monster.hp.current.toString()} readOnly />
                     </Col>
+                    <Form.Label column sm="2">
+                        Remaining monsters
+                    </Form.Label>
+                    <Col sm="10">
+                        <Form.Control type="text" placeholder={props.remainingMonsters.toString()} readOnly />
+                    </Col>
                 </Form.Group>
             </Form>
             <ButtonGroup aria-label="Actions">
                 <Button variant="secondary">Shout</Button>
-                <Button variant="secondary">Attack</Button>
+                <Button variant="secondary" onClick={props.onAttack}>Attack</Button>
                 <Button variant="secondary">Magic</Button>
             </ButtonGroup>
+            <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm="2">
+                        Health
+                    </Form.Label>
+                    <Col sm="10">
+                        <Form.Control type="text" placeholder={props.player.health.current.toString()} readOnly />
+                    </Col>
+
+                    <Form.Label column sm="2">
+                        Weapon
+                    </Form.Label>
+                    <Col sm="10">
+                        <Form.Control type="text" placeholder={props.player.weapon.name} readOnly />
+                    </Col>
+                </Form.Group>
+            </Form>
         </>
     );
 };
 
-const Game = (props: {state: game.State}) => {
+const Game = (props: {state: game.State, setState: (state: game.State) => void}) => {
     if(props.state.monster != null)
     {
         // fight monsters
-        return <MonsterFight monster={props.state.monster}/>;
+        return <MonsterFight
+            monster={props.state.monster}
+            player={props.state.player}
+            remainingMonsters={props.state.monsters_remaining}
+            onAttack={() => {
+                var state = props.state;
+                game.player_attack(state);
+                props.setState({...state});
+            }}/>;
     }
     else
     {
@@ -67,7 +98,7 @@ function App()
                 <Row className="justify-content-md-center">
                     <Col xs lg="2" />
                         <Col md="auto">
-                            <Game state={state}/>
+                            <Game state={state} setState={setState}/>
                         </Col>
                     <Col xs lg="2" />
                 </Row>

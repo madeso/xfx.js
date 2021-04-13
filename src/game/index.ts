@@ -193,11 +193,15 @@ export class City
 
 export class Player
 {
-    health = 10;
-    max_health = new Ranged(10)
+    health = new Ranged(10)
     level = 10;
     xp = new Ranged(100);
     weapon = new Weapon('fists', 0, 0);
+}
+
+const random = (max: number, min: number=1) => 
+{
+    return min+Math.floor(Math.random()*(max - min));
 }
 
 export class State
@@ -214,18 +218,50 @@ export class State
     }
 }
 
-
-const set_monsters_for_city = (state: State) =>
+const enter_new_city = (state: State) =>
 {
+    if(state.monster != null)
+    {
+        return;
+    }
+
     state.monster = generate_enemy(state.player.level);
-    state.monsters_remaining = 1+Math.floor(Math.random()*9)
+    state.monsters_remaining = random(10)
+};
+
+export const set_new_monster = (state: State) =>
+{
+    if(state.monsters_remaining > 0)
+    {
+        state.monster = generate_enemy(state.player.level);
+        state.monsters_remaining -= 1;
+    }
+    else
+    {
+        state.monster = null;
+    }
+};
+
+export const player_attack = (state: State) =>
+{
+    if(state.monster == null)
+    {
+        console.log("no monster")
+        return;
+    }
+    const damage = random(state.player.level) + state.player.weapon.dmg;
+    state.monster.hp.current -= damage;
+    if(state.monster.hp.current <= 0)
+    {
+        set_new_monster(state);
+    }
 };
 
 export const new_game = () =>
 {
     const state = new State( new City('city') );
 
-    set_monsters_for_city(state);
+    enter_new_city(state);
 
     return state;
 };
