@@ -27,25 +27,15 @@ const Chapter = (props: {chapter: game.Chapter}) =>
     );
 }
 
-const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void}) => {
-    const button_group = React.useRef<HTMLInputElement>(null);
-    const on_attack = () =>
-    {
-        props.onAttack();
-        if(button_group.current)
-        {
-            button_group.current.scrollIntoView();
-        }
-    };
+type Ref = React.RefObject<HTMLInputElement>;
 
+const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void, button_group: Ref}) => {
     return (
         <>
             <div className="log">
                 {
                     props.history.map((chapter, i) =>
                     {     
-                        console.log("Entered");                 
-                        // Return the element. Also pass key     
                         return (<Chapter chapter={chapter}/>) 
                     })
                 }
@@ -72,9 +62,9 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                     </div>
                 </div>
             </div>
-            <div className="actions" ref={button_group}>
+            <div className="actions" ref={props.button_group}>
                 <button>Shout</button>
-                <button onClick={on_attack}>Attack</button>
+                <button onClick={props.onAttack}>Attack</button>
                 <button>Magic</button>
             </div>
             <div id="player_prop">
@@ -96,7 +86,34 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
     );
 };
 
+const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void}) =>
+{
+    return <>
+        <div className="log">
+                {
+                    props.history.map((chapter, i) =>
+                    {     
+                        return (<Chapter chapter={chapter}/>) 
+                    })
+                }
+        </div>
+        <div className="actions" ref={props.button_group}>
+            <button onClick={props.goto_next_city}>Travel to next city</button>
+        </div>
+        
+        </>;
+} 
+
 const Game = (props: {state: game.State, setState: (state: game.State) => void}) => {
+    const button_group = React.useRef<HTMLInputElement>(null);
+    const focus = () =>
+    {
+        if(button_group.current)
+        {
+            button_group.current.scrollIntoView();
+        }
+    };
+
     if(props.state.monster != null)
     {
         // fight monsters
@@ -109,12 +126,23 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
                 var state = props.state;
                 game.player_attack(state);
                 props.setState({...state});
-            }}/>;
+                focus();
+            }}
+            button_group={button_group}
+            />;
     }
     else
     {
-        // buy things in the city
-        return <></>;
+        return <City
+            history={props.state.history}
+            goto_next_city={()=>{
+                var state = props.state;
+                game.enter_new_city(state);
+                props.setState({...state});
+                focus();
+            }}
+            button_group={button_group}
+        />;
     }
 }
 

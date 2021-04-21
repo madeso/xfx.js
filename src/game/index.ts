@@ -255,7 +255,7 @@ const log = (state: State, text: string) =>
     state.history[state.history.length-1].messages.push(new Log(text));
 }
 
-const enter_new_city = (state: State) =>
+export const enter_new_city = (state: State) =>
 {
     if(state.monster != null)
     {
