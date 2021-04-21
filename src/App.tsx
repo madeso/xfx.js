@@ -18,9 +18,9 @@ const Chapter = (props: {chapter: game.Chapter}) =>
         <div className="chapter">
             {
                 props.chapter.messages.map((log, i) =>
-                {               
-                    // Return the element. Also pass key     
-                    return (<Log log={log}/>) 
+                {
+                    // Return the element. Also pass key
+                    return (<Log log={log}/>)
                 })
             }
         </div>
@@ -35,8 +35,8 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
             <div className="log">
                 {
                     props.history.map((chapter, i) =>
-                    {     
-                        return (<Chapter chapter={chapter}/>) 
+                    {
+                        return (<Chapter chapter={chapter}/>)
                     })
                 }
             </div>
@@ -92,17 +92,17 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
         <div className="log">
                 {
                     props.history.map((chapter, i) =>
-                    {     
-                        return (<Chapter chapter={chapter}/>) 
+                    {
+                        return (<Chapter chapter={chapter}/>)
                     })
                 }
         </div>
         <div className="actions" ref={props.button_group}>
             <button onClick={props.goto_next_city}>Travel to next city</button>
         </div>
-        
+
         </>;
-} 
+}
 
 const Game = (props: {state: game.State, setState: (state: game.State) => void}) => {
     const button_group = React.useRef<HTMLInputElement>(null);
@@ -148,7 +148,7 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
 
 function App()
 {
-    const [state, setState] = React.useState(game.new_game()); 
+    const [state, setState] = React.useState(game.new_game());
     const newGame = () =>
     {
         setState(game.new_game());
