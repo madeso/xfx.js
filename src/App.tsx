@@ -3,7 +3,16 @@ import './app.css';
 
 import * as game from './game'
 
-const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, onAttack:()=>void}) => {
+const Log = (props: {log: game.Log}) =>
+{
+    return (
+        <div>
+            {props.log.message}
+        </div>
+    );
+}
+
+const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Log[],onAttack:()=>void}) => {
     return (
         <>
             <div id="monster_prop">
@@ -27,6 +36,16 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                         {props.remainingMonsters.toString()}
                     </div>
                 </div>
+            </div>
+            <div className="log">
+                {
+                    props.history.map((log, i) =>
+                    {     
+                        console.log("Entered");                 
+                        // Return the element. Also pass key     
+                        return (<Log log={log}/>) 
+                    })
+                }
             </div>
             <div className="actions">
                 <button>Shout</button>
@@ -60,6 +79,7 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
             monster={props.state.monster}
             player={props.state.player}
             remainingMonsters={props.state.monsters_remaining}
+            history={props.state.history}
             onAttack={() => {
                 var state = props.state;
                 game.player_attack(state);

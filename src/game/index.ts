@@ -181,6 +181,17 @@ const list_enemies = (level: number) =>
 
 const generate_enemy = (level: number) => one_of(list_enemies(level))();
 
+export class Log
+{
+    message: string;
+
+    constructor(message: string)
+    {
+        this.message = message;
+    }
+}
+
+
 export class City
 {
     name: string;
@@ -211,11 +222,18 @@ export class State
     city: City;
     monster: null| Monster= null;
     monsters_remaining = 0;
+    history: Log[];
 
     constructor(city: City)
     {
         this.city = city;
+        this.history = [];
     }
+}
+
+const log = (state: State, text: string) =>
+{
+    state.history.push(new Log(text));
 }
 
 const enter_new_city = (state: State) =>
@@ -253,7 +271,12 @@ export const player_attack = (state: State) =>
     state.monster.hp.current -= damage;
     if(state.monster.hp.current <= 0)
     {
+        log(state, "you killed " + state.monster.name);
         set_new_monster(state);
+    }
+    else
+    {
+        log(state, "you hit " + state.monster.name);
     }
 };
 
