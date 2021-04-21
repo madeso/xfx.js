@@ -30,6 +30,7 @@ const Chapter = (props: {chapter: game.Chapter}) =>
 type Ref = React.RefObject<HTMLInputElement>;
 
 const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void, button_group: Ref}) => {
+    const size = 200;
     return (
         <>
             <div className="log">
@@ -51,6 +52,17 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 <div className="property">
                     <div className="key">HP</div>
                     <div className="value">
+                        <div className="bar" style={
+                            {
+                                width: size
+                            }
+                        }>
+                            <div className="bar_value" style={
+                                {
+                                    width: size * (props.monster.hp.current / props.monster.hp.max)
+                                }
+                            }/>
+                        </div>
                         {props.monster.hp.current.toString()}
                     </div>
                 </div>

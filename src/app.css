@@ -38,6 +38,20 @@ button
 
 }
 
+.bar
+{
+    background-color: #fff;
+    height: 10px;
+    margin: 0;
+}
+
+.bar_value
+{
+    background-color: #f33;
+    height: 10px;
+    margin: 0;
+}
+
 #title
 {
     display: inline;
