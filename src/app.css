@@ -1,0 +1,67 @@
+button
+{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#body
+{
+  background-color: #eee;
+
+  max-width: 800px;
+  margin: auto;
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#meny
+{
+    background-color: #ddd;
+    display: block;
+}
+
+#title
+{
+    display: inline;
+    padding-left: 10px;
+}
+
+#buttons
+{
+    display: inline;
+    padding-left: 30px;
+}
+
+#buttons button
+{
+    padding: 6px;
+    background-color: #aaa;
+}
+
+.property
+{
+    display: block;
+}
+
+.key
+{
+    font-weight: bold;
+    display: inline;
+}
+.value
+{
+    font-style: italic;
+    display: inline;
+    margin-left: 6px;
+}

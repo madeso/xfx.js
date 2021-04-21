@@ -1,59 +1,53 @@
 import React from 'react';
-import './App.css';
-
-import { Container, Row, Button, Col, Navbar, Nav, ButtonGroup, Form } from 'react-bootstrap';
+import './app.css';
 
 import * as game from './game'
 
 const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, onAttack:()=>void}) => {
     return (
         <>
+            <div id="monster_prop">
+                <div className="property">
+                    <div className="key">Monster</div>
+                    <div className="value">
+                        {props.monster.name}
+                    </div>
+                </div>
 
-            <Form>
-                <Form.Group as={Row}>
-                    <Form.Label column sm="2">
-                        Monster
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" placeholder={props.monster.name} readOnly />
-                    </Col>
+                <div className="property">
+                    <div className="key">HP</div>
+                    <div className="value">
+                        {props.monster.hp.current.toString()}
+                    </div>
+                </div>
 
-                    <Form.Label column sm="2">
-                        HP
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" placeholder={props.monster.hp.current.toString()} readOnly />
-                    </Col>
-                    <Form.Label column sm="2">
-                        Remaining monsters
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" placeholder={props.remainingMonsters.toString()} readOnly />
-                    </Col>
-                </Form.Group>
-            </Form>
-            <ButtonGroup aria-label="Actions">
-                <Button variant="secondary">Shout</Button>
-                <Button variant="secondary" onClick={props.onAttack}>Attack</Button>
-                <Button variant="secondary">Magic</Button>
-            </ButtonGroup>
-            <Form>
-                <Form.Group as={Row}>
-                    <Form.Label column sm="2">
-                        Health
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" placeholder={props.player.health.current.toString()} readOnly />
-                    </Col>
+                <div className="property">
+                    <div className="key">Remaining monsters</div>
+                    <div className="value">
+                        {props.remainingMonsters.toString()}
+                    </div>
+                </div>
+            </div>
+            <div className="actions">
+                <button>Shout</button>
+                <button onClick={props.onAttack}>Attack</button>
+                <button>Magic</button>
+            </div>
+            <div id="player_prop">
+                <div className="property">
+                    <div className="key">Health</div>
+                    <div className="value">
+                        {props.player.health.current.toString()}
+                    </div>
+                </div>
 
-                    <Form.Label column sm="2">
-                        Weapon
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" placeholder={props.player.weapon.name} readOnly />
-                    </Col>
-                </Form.Group>
-            </Form>
+                <div className="property">
+                    <div className="key">Weapon</div>
+                    <div className="value">
+                        {props.player.weapon.name}
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
@@ -87,23 +81,17 @@ function App()
         setState(game.new_game());
     };
     return (
-        <>
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">XFx</Navbar.Brand>
-                <Nav className="mr-auto">
-                    <Nav.Link href="#home" onClick={newGame}>New game</Nav.Link>
-                </Nav>
-            </Navbar>
-            <Container>
-                <Row className="justify-content-md-center">
-                    <Col xs lg="2" />
-                        <Col md="auto">
-                            <Game state={state} setState={setState}/>
-                        </Col>
-                    <Col xs lg="2" />
-                </Row>
-            </Container>
-        </>
+        <div className="app">
+            <div id="meny">
+                <div id="title">XFx</div>
+                <div id="buttons">
+                    <button onClick={newGame}>New game</button>
+                </div>
+            </div>
+            <div id="body">
+                <Game state={state} setState={setState}/>
+            </div>
+        </div>
     );
 }
 
