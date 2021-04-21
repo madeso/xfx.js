@@ -19,7 +19,7 @@ button
   max-width: 800px;
   margin: auto;
   position: relative;
-  padding-top: 30px;
+  padding-top: 60px;
   padding-bottom: 30px;
   padding-left: 6px;
   padding-right: 6px;
@@ -29,6 +29,13 @@ button
 {
     background-color: #ddd;
     display: block;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+
 }
 
 #title
@@ -52,6 +59,11 @@ button
 .property
 {
     display: block;
+}
+
+.chapter
+{
+    padding-bottom: 20px;
 }
 
 .key

@@ -191,6 +191,16 @@ export class Log
     }
 }
 
+export class Chapter
+{
+    messages: Log[];
+
+    constructor()
+    {
+        this.messages = [];
+    }
+}
+
 
 export class City
 {
@@ -222,7 +232,7 @@ export class State
     city: City;
     monster: null| Monster= null;
     monsters_remaining = 0;
-    history: Log[];
+    history: Chapter[];
 
     constructor(city: City)
     {
@@ -231,9 +241,18 @@ export class State
     }
 }
 
+const add_new_chapter = (state: State) =>
+{
+    state.history.push(new Chapter());
+}
+
 const log = (state: State, text: string) =>
 {
-    state.history.push(new Log(text));
+    if(state.history.length === 0)
+    {
+        add_new_chapter(state);
+    }
+    state.history[state.history.length-1].messages.push(new Log(text));
 }
 
 const enter_new_city = (state: State) =>
@@ -243,20 +262,28 @@ const enter_new_city = (state: State) =>
         return;
     }
 
+    add_new_chapter(state);
+    log(state, "After a long journey you reach the city.")
+
     state.monster = generate_enemy(state.player.level);
     state.monsters_remaining = random(10)
+    log(state, state.monster.name + " appears");
 };
 
 export const set_new_monster = (state: State) =>
 {
+    add_new_chapter(state);
+
     if(state.monsters_remaining > 0)
     {
         state.monster = generate_enemy(state.player.level);
         state.monsters_remaining -= 1;
+        log(state, state.monster.name + " appears");
     }
     else
     {
         state.monster = null;
+        log(state, "You enter the gate");
     }
 };
 

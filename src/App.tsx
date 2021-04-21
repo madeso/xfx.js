@@ -6,15 +6,40 @@ import * as game from './game'
 const Log = (props: {log: game.Log}) =>
 {
     return (
-        <div>
+        <div className="line">
             {props.log.message}
         </div>
     );
 }
 
-const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Log[],onAttack:()=>void}) => {
+const Chapter = (props: {chapter: game.Chapter}) =>
+{
+    return (
+        <div className="chapter">
+            {
+                props.chapter.messages.map((log, i) =>
+                {               
+                    // Return the element. Also pass key     
+                    return (<Log log={log}/>) 
+                })
+            }
+        </div>
+    );
+}
+
+const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void}) => {
     return (
         <>
+            <div className="log">
+                {
+                    props.history.map((chapter, i) =>
+                    {     
+                        console.log("Entered");                 
+                        // Return the element. Also pass key     
+                        return (<Chapter chapter={chapter}/>) 
+                    })
+                }
+            </div>
             <div id="monster_prop">
                 <div className="property">
                     <div className="key">Monster</div>
@@ -36,16 +61,6 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                         {props.remainingMonsters.toString()}
                     </div>
                 </div>
-            </div>
-            <div className="log">
-                {
-                    props.history.map((log, i) =>
-                    {     
-                        console.log("Entered");                 
-                        // Return the element. Also pass key     
-                        return (<Log log={log}/>) 
-                    })
-                }
             </div>
             <div className="actions">
                 <button>Shout</button>
