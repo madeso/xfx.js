@@ -28,6 +28,16 @@ const Chapter = (props: {chapter: game.Chapter}) =>
 }
 
 const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void}) => {
+    const button_group = React.useRef<HTMLInputElement>(null);
+    const on_attack = () =>
+    {
+        props.onAttack();
+        if(button_group.current)
+        {
+            button_group.current.scrollIntoView();
+        }
+    };
+
     return (
         <>
             <div className="log">
@@ -62,9 +72,9 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                     </div>
                 </div>
             </div>
-            <div className="actions">
+            <div className="actions" ref={button_group}>
                 <button>Shout</button>
-                <button onClick={props.onAttack}>Attack</button>
+                <button onClick={on_attack}>Attack</button>
                 <button>Magic</button>
             </div>
             <div id="player_prop">
