@@ -129,3 +129,37 @@ button
     width: 600px;
 }
 
+.item
+{
+    background-color: #aaf;
+    margin: 6px;
+    position: relative;
+    display: inline-block;
+}
+
+.item .gold
+{
+    position: absolute;
+
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    bottom: -58px;
+    background-color: #000;
+    padding: 8px;
+    z-index: 1;
+}
+/* http://projects.verou.me/bubbly/ */
+.gold:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	border-bottom-color: #000;
+	border-top: 0;
+	margin-left: -6px;
+	margin-top: -6px;
+}

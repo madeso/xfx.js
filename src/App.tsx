@@ -98,6 +98,21 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
     );
 };
 
+const ItemToBuy = (props: {name: string, cost: number}) =>
+{
+    const [is_hover, set_hover] = React.useState(false);
+    return <button className="item"
+        onMouseEnter={() => set_hover(true)}
+        onMouseLeave={()=>set_hover(false)}
+    >
+        <div className="name">{props.name}</div>
+        {
+            is_hover &&
+            <div className="gold">{props.cost}</div>
+        }
+    </button>;
+}
+
 const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void}) =>
 {
     const [is_store_visible, set_store_visible] = React.useState(false);
@@ -118,7 +133,12 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                         <div className="popup">
                             <div className="store_title">Store</div>
                             <div className="store_items">
-                                Hello
+                                {
+                                    game.weapons.map((item, i) =>
+                                    {
+                                        return <ItemToBuy name={item.name} cost={item.gold}/>
+                                    })
+                                }
                             </div>
                             <button onClick={() => set_store_visible(false)}>Go back to city square</button>
                         </div>
