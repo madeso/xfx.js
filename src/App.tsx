@@ -100,16 +100,33 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
 
 const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void}) =>
 {
+    const [is_store_visible, set_store_visible] = React.useState(false);
     return <>
         <div className="log">
+            {
+                props.history.map((chapter, i) =>
                 {
-                    props.history.map((chapter, i) =>
-                    {
-                        return (<Chapter chapter={chapter}/>)
-                    })
-                }
+                    return (<Chapter chapter={chapter}/>)
+                })
+            }
         </div>
+        {
+            is_store_visible &&
+                <>
+                    <div className="whiteout"/>
+                    <div className="popup_base">
+                        <div className="popup">
+                            <div className="store_title">Store</div>
+                            <div className="store_items">
+                                Hello
+                            </div>
+                            <button onClick={() => set_store_visible(false)}>Go back to city square</button>
+                        </div>
+                    </div>
+                </>
+        }
         <div className="actions" ref={props.button_group}>
+            <button onClick={() => set_store_visible(true)}>Go to store</button>
             <button onClick={props.goto_next_city}>Travel to next city</button>
         </div>
 
