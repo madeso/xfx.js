@@ -116,6 +116,12 @@ const ItemToBuy = (props: {name: string, cost: number}) =>
 const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void}) =>
 {
     const [is_store_visible, set_store_visible] = React.useState(false);
+    const [greeting, set_greeting] = React.useState("");
+    const open_store = () =>
+    {
+        set_store_visible(true);
+        set_greeting(game.get_store_greeting());
+    };
     return <>
         <div className="log">
             {
@@ -132,6 +138,7 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                     <div className="popup_base">
                         <div className="popup">
                             <div className="store_title">Store</div>
+                            <div className="greeting">{greeting}</div>
                             <div className="store_items">
                                 {
                                     game.weapons.map((item, i) =>
@@ -146,7 +153,7 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                 </>
         }
         <div className="actions" ref={props.button_group}>
-            <button onClick={() => set_store_visible(true)}>Go to store</button>
+            <button onClick={() => open_store()}>Go to store</button>
             <button onClick={props.goto_next_city}>Travel to next city</button>
         </div>
 

@@ -17,7 +17,7 @@ player status:
     items (list):
         name
         action (hp, mana)
-    
+
         spells?
             name
             action (health, damage)
@@ -33,11 +33,11 @@ combat:
         attack chance
         traccery rule for attack
         tracery rule for defend
-  
+
 city:
     shot lists
         armor, weapon, items
-    
+
     train?
         increase xp for gold
 
@@ -165,7 +165,7 @@ const list_enemies = (level: number) =>
 
     // todo(Gustav): balance enemies
     // weighted map instead of totally random
-    
+
     if(level >= 2 ) { enemies.push(generate_enemy_black_knight); }
     if(level >= 2 ) { enemies.push(generate_enemy_viking); }
     if(level >= 3 ) { enemies.push(generate_enemy_dwarf); }
@@ -175,7 +175,7 @@ const list_enemies = (level: number) =>
     if(level >= 7 ) { enemies.push(generate_enemy_nightmare_creature); }
     if(level >= 8 ) { enemies.push(generate_enemy_stone_man); }
     if(level >= 9 ) { enemies.push(generate_enemy_evil_sorcerer); }
-    
+
     return enemies;
 }
 
@@ -220,7 +220,7 @@ export class Player
     weapon = new Weapon('fists', 0, 0);
 }
 
-const random = (max: number, min: number=1) => 
+const random = (max: number, min: number=1) =>
 {
     return min+Math.floor(Math.random()*(max - min));
 }
@@ -315,3 +315,8 @@ export const new_game = () =>
 
     return state;
 };
+
+export const get_store_greeting = () =>
+{
+    return "Greetings stranger, what do you need?";
+}
