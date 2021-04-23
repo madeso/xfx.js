@@ -131,10 +131,15 @@ button
 
 .item
 {
-    background-color: #aaf;
+    background-color: #faa;
     margin: 6px;
     position: relative;
     display: inline-block;
+}
+
+.item.affordable
+{
+    background-color: #aaf;
 }
 
 .item .gold

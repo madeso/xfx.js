@@ -1,4 +1,5 @@
 import React from 'react';
+import { couldStartTrivia } from 'typescript';
 import './app.css';
 
 import * as game from './game'
@@ -98,12 +99,16 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
     );
 };
 
-const ItemToBuy = (props: {name: string, cost: number}) =>
+const ItemToBuy = (props: {name: string, cost: number, can_buy: () => boolean, buy: () => void}) =>
 {
     const [is_hover, set_hover] = React.useState(false);
-    return <button className="item"
+
+    const can_buy_css = props.can_buy() ? 'affordable' : ''
+
+    return <button className={`item ${can_buy_css}`}
         onMouseEnter={() => set_hover(true)}
         onMouseLeave={()=>set_hover(false)}
+        onClick={props.buy}
     >
         <div className="name">{props.name}</div>
         {
@@ -113,7 +118,7 @@ const ItemToBuy = (props: {name: string, cost: number}) =>
     </button>;
 }
 
-const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player}) =>
+const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player, buy_weapon: (n: number)=> void}) =>
 {
     const [is_store_visible, set_store_visible] = React.useState(false);
     const [greeting, set_greeting] = React.useState("");
@@ -121,6 +126,11 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
     {
         set_store_visible(true);
         set_greeting(game.get_store_greeting());
+    };
+    const buy_weapon = (weapon_index: number) =>
+    {
+        props.buy_weapon(weapon_index);
+        set_store_visible(false);
     };
     return <>
         <div className="log">
@@ -143,7 +153,7 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                                 {
                                     game.weapons.map((item, i) =>
                                     {
-                                        return <ItemToBuy name={item.name} cost={item.gold}/>
+                                        return <ItemToBuy name={item.name} cost={item.gold} can_buy={() => game.can_buy_weapon(props.player, i)} buy={() => buy_weapon(i)}/>
                                     })
                                 }
                             </div>
@@ -204,6 +214,14 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
             }}
             button_group={button_group}
             player={props.state.player}
+            buy_weapon={
+                (weapon_index: number) => {
+                    var state = props.state;
+                    game.buy_weapon(state, weapon_index);
+                    props.setState({...state});
+                    focus();
+                }
+            }
         />;
     }
 }

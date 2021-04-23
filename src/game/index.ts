@@ -288,23 +288,66 @@ export const set_new_monster = (state: State) =>
     }
 };
 
-export const player_attack = (state: State) =>
+
+const player_hit = (state: State) =>
 {
     if(state.monster == null)
     {
         console.log("no monster")
         return;
     }
+
     const damage = random(state.player.level) + state.player.weapon.dmg;
     state.monster.hp.current -= damage;
     if(state.monster.hp.current <= 0)
     {
-        log(state, "you killed " + state.monster.name);
+        log(state, `You killed ${state.monster.name} dealing ${damage} damage.`);
+        const gold = random(state.monster.gold, 0);
+        if(gold > 0)
+        {
+            log(state, `You picked up ${gold} gold from the corpse.`);
+            state.player.gold += gold;
+        }
         set_new_monster(state);
     }
     else
     {
-        log(state, "you hit " + state.monster.name);
+        log(state, `You hit ${state.monster.name} dealing ${damage} damage.`);
+    }
+}
+
+const monster_hit = (state: State) =>
+{
+    if(state.monster == null)
+    {
+        return;
+    }
+
+    const damage = random(state.monster.damage);
+    state.player.health.current -= damage;
+    if(state.player.health.current <= 0)
+    {
+        log(state, `You were killed by ${state.monster.name} dealing ${damage} damage!`);
+    }
+    else
+    {
+        log(state, `${state.monster.name} hit you dealing ${damage} damage.`);
+    }
+}
+
+export const player_attack = (state: State) =>
+{
+    const c = random(1, 0);
+    console.log(c);
+    if(c == 0)
+    {
+        monster_hit(state);
+        player_hit(state);
+    }
+    else
+    {
+        player_hit(state);
+        monster_hit(state);
     }
 };
 
@@ -320,4 +363,17 @@ export const new_game = () =>
 export const get_store_greeting = () =>
 {
     return "Greetings stranger, what do you need?";
+}
+
+export const can_buy_weapon = (player: Player, weapon_index: number) =>
+{
+    return player.gold <= weapons[weapon_index].gold;
+}
+
+export const buy_weapon = (state: State, weapon_index: number) =>
+{
+    log(state, `You gave away your ${state.player.weapon.name}`);
+    state.player.weapon = weapons[weapon_index];
+    log(state, `This ${state.player.weapon.name} will serve me well`);
+    state.player.gold -= state.player.weapon.gold;
 }
