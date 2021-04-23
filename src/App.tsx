@@ -113,7 +113,7 @@ const ItemToBuy = (props: {name: string, cost: number}) =>
     </button>;
 }
 
-const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void}) =>
+const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player}) =>
 {
     const [is_store_visible, set_store_visible] = React.useState(false);
     const [greeting, set_greeting] = React.useState("");
@@ -146,6 +146,11 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                                         return <ItemToBuy name={item.name} cost={item.gold}/>
                                     })
                                 }
+                            </div>
+                            <div className="inventory">
+                                <div className="current_gold">
+                                    {props.player.gold}
+                                </div>
                             </div>
                             <button onClick={() => set_store_visible(false)}>Go back to city square</button>
                         </div>
@@ -198,6 +203,7 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
                 focus();
             }}
             button_group={button_group}
+            player={props.state.player}
         />;
     }
 }

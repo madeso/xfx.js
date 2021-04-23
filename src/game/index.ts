@@ -218,6 +218,7 @@ export class Player
     level = 10;
     xp = new Ranged(100);
     weapon = new Weapon('fists', 0, 0);
+    gold = 100;
 }
 
 const random = (max: number, min: number=1) =>
