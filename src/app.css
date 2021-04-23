@@ -163,3 +163,8 @@ button
 	margin-left: -6px;
 	margin-top: -6px;
 }
+
+.store_greeting
+{
+    font-style: italic;
+}

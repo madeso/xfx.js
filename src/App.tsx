@@ -138,7 +138,7 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                     <div className="popup_base">
                         <div className="popup">
                             <div className="store_title">Store</div>
-                            <div className="greeting">{greeting}</div>
+                            <div className="store_greeting">{greeting}</div>
                             <div className="store_items">
                                 {
                                     game.weapons.map((item, i) =>
