@@ -289,6 +289,20 @@ export const set_new_monster = (state: State) =>
 };
 
 
+
+const check_for_level_up = (state: State) =>
+{
+    const player = state.player;
+    if(player.xp.current >= player.xp.max)
+    {
+        player.xp.current -= player.xp.max;
+        player.xp.max *= 2;
+        player.level += 1;
+        log(state, `You have reached level ${player.level}`);
+    }
+}
+
+
 const player_hit = (state: State) =>
 {
     if(state.monster == null)
@@ -308,6 +322,10 @@ const player_hit = (state: State) =>
             log(state, `You picked up ${gold} gold from the corpse.`);
             state.player.gold += gold;
         }
+        const xp = state.monster.xp; // make random?
+        state.player.xp.current += xp;
+        log(state, `You got ${xp} xp`);
+        check_for_level_up(state);
         set_new_monster(state);
     }
     else

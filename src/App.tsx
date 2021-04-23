@@ -119,6 +119,13 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                         {props.player.weapon.name}
                     </div>
                 </div>
+
+                <div className="property">
+                    <div className="key">Level</div>
+                    <div className="value">
+                        {props.player.level}
+                    </div>
+                </div>
             </div>
         </>
     );
