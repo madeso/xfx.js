@@ -345,6 +345,31 @@ const player_hit = (state: State) =>
     }
 }
 
+const monster_deal_damage = (state: State, damage: number) =>
+{
+    if(state.monster == null)
+    {
+        return;
+    }
+
+    if(damage > 0)
+    {
+        state.player.health.current -= damage;
+        if(state.player.health.current <= 0)
+        {
+            log(state, `You were killed by ${state.monster.name} dealing ${damage} damage!`);
+        }
+        else
+        {
+            log(state, `${state.monster.name} hit you dealing ${damage} damage.`);
+        }
+    }
+    else
+    {
+        log(state, 'No effect');
+    }
+}
+
 const monster_hit = (state: State) =>
 {
     if(state.monster == null)
@@ -352,22 +377,28 @@ const monster_hit = (state: State) =>
         return;
     }
 
-    const damage = calculate_physical_damage(state.player.armor.ap, random(state.monster.damage));
-    state.player.health.current -= damage;
-    if(state.player.health.current <= 0)
+    const total_damage = state.monster.damage + state.monster.magic_damage;
+    const r = random(total_damage, 0);
+    const do_physical_attack = r < state.monster.damage;
+
+    const damage = do_physical_attack
+        ? calculate_physical_damage(state.player.armor.ap, random(state.monster.damage))
+        : random(state.monster.magic_damage);
+
+    if(do_physical_attack)
     {
-        log(state, `You were killed by ${state.monster.name} dealing ${damage} damage!`);
+        log(state, `${state.monster.name} took a swing at the hero`);
     }
     else
     {
-        log(state, `${state.monster.name} hit you dealing ${damage} damage.`);
+        log(state, `${state.monster.name} threw a fireball!`);
     }
+    monster_deal_damage(state, damage);
 }
 
 export const player_attack = (state: State) =>
 {
     const c = random(1, 0);
-    console.log(c);
     if(c == 0)
     {
         monster_hit(state);
