@@ -30,6 +30,34 @@ const Chapter = (props: {chapter: game.Chapter}) =>
 
 type Ref = React.RefObject<HTMLInputElement>;
 
+
+const Bar = (props: {range: game.Ranged}) =>
+{
+    const size = 200;
+    const bar_value_size = size * Math.max(0, props.range.current / props.range.max);
+    const text_position = 3 + bar_value_size;
+    return (
+        <>
+            <div className="bar" style={
+                {
+                    width: size
+                }
+            }>
+                <div className="bar_value" style={
+                    {
+                        width: bar_value_size
+                    }
+                }/>
+                <div className="bar_text" style={
+                    {
+                        left: text_position
+                    }
+                }>{props.range.current}</div>
+            </div>
+        </>
+        );
+}
+
 const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void, button_group: Ref}) => {
     const size = 200;
     return (
@@ -53,18 +81,7 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 <div className="property">
                     <div className="key">HP</div>
                     <div className="value">
-                        <div className="bar" style={
-                            {
-                                width: size
-                            }
-                        }>
-                            <div className="bar_value" style={
-                                {
-                                    width: size * (props.monster.hp.current / props.monster.hp.max)
-                                }
-                            }/>
-                        </div>
-                        {props.monster.hp.current.toString()}
+                        <Bar range={props.monster.hp} />
                     </div>
                 </div>
 
@@ -84,7 +101,7 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 <div className="property">
                     <div className="key">Health</div>
                     <div className="value">
-                        {props.player.health.current.toString()}
+                        <Bar range={props.player.health} />
                     </div>
                 </div>
 

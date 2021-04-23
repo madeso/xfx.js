@@ -38,18 +38,28 @@ button
 
 }
 
+.bar, .bar_value
+{
+    height: 1.5em;
+    margin: 0;
+}
+
 .bar
 {
     background-color: #fff;
-    height: 10px;
-    margin: 0;
+    position: relative;
 }
 
 .bar_value
 {
     background-color: #f33;
-    height: 10px;
-    margin: 0;
+}
+
+.bar_text
+{
+    position: absolute;
+    left: 3px;
+    top: 0px;
 }
 
 #title
