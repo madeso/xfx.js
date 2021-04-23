@@ -224,6 +224,7 @@ export class Player
     level = 10;
     xp = new Ranged(100);
     weapon = new Weapon('fists', 0, 0);
+    armor = new Armor('topless', 0, 0);
     gold = 100;
 }
 
@@ -308,6 +309,10 @@ const check_for_level_up = (state: State) =>
     }
 }
 
+const calculate_physical_damage = (ap: number, damage: number) =>
+{
+    return Math.max(0, damage - ap);
+}
 
 const player_hit = (state: State) =>
 {
@@ -317,7 +322,7 @@ const player_hit = (state: State) =>
         return;
     }
 
-    const damage = random(state.player.level) + state.player.weapon.dmg;
+    const damage = calculate_physical_damage(state.monster.armor, random(state.player.level) + state.player.weapon.dmg);
     state.monster.hp.current -= damage;
     if(state.monster.hp.current <= 0)
     {
@@ -347,7 +352,7 @@ const monster_hit = (state: State) =>
         return;
     }
 
-    const damage = random(state.monster.damage);
+    const damage = calculate_physical_damage(state.player.armor.ap, random(state.monster.damage));
     state.player.health.current -= damage;
     if(state.player.health.current <= 0)
     {
@@ -399,5 +404,18 @@ export const buy_weapon = (state: State, weapon_index: number) =>
     log(state, `You gave away your ${state.player.weapon.name}`);
     state.player.weapon = weapons[weapon_index];
     log(state, `This ${state.player.weapon.name} will serve me well`);
+    state.player.gold -= state.player.weapon.gold;
+}
+
+export const can_buy_armor = (player: Player, armor_index: number) =>
+{
+    return player.gold <= weapons[armor_index].gold;
+}
+
+export const buy_armor = (state: State, armor_index: number) =>
+{
+    log(state, `You gave away your ${state.player.armor.name}`);
+    state.player.armor = armors[armor_index];
+    log(state, `This ${state.player.armor.name} will serve me well`);
     state.player.gold -= state.player.weapon.gold;
 }

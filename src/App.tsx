@@ -121,6 +121,13 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 </div>
 
                 <div className="property">
+                    <div className="key">Armor</div>
+                    <div className="value">
+                        {props.player.armor.name}
+                    </div>
+                </div>
+
+                <div className="property">
                     <div className="key">Level</div>
                     <div className="value">
                         {props.player.level}
@@ -160,6 +167,12 @@ const Store = (props: {name: string, player: game.Player, buy_item: (index: numb
         set_greeting(game.get_store_greeting());
     };
 
+    const buy_item = (index: number) =>
+    {
+        props.buy_item(index);
+        set_store_visible(false);
+    };
+
     return (<>
         <button onClick={() => open_store()}>Go to {props.name}</button>
         {
@@ -174,7 +187,7 @@ const Store = (props: {name: string, player: game.Player, buy_item: (index: numb
                             {
                                 props.items.map((item, i) =>
                                 {
-                                    return <ItemToBuy name={item.name} cost={item.gold} can_buy={() => props.can_buy(i)} buy={() => props.buy_item(i)}/>
+                                    return <ItemToBuy name={item.name} cost={item.gold} can_buy={() => props.can_buy(i)} buy={() => buy_item(i)}/>
                                 })
                             }
                         </div>
@@ -191,7 +204,7 @@ const Store = (props: {name: string, player: game.Player, buy_item: (index: numb
     </>);
 }
 
-const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player, buy_weapon: (n: number)=> void}) =>
+const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player, buy_weapon: (n: number)=> void, buy_armor: (n: number)=> void}) =>
 {
     return <>
         <div className="log">
@@ -204,11 +217,18 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
         </div>
         <div className="actions" ref={props.button_group}>
             <Store
-                name="Armory"
+                name="Weaponsmith"
                 player={props.player}
                 items={game.weapons}
                 can_buy={(n: number) => game.can_buy_weapon(props.player, n)}
                 buy_item={props.buy_weapon}
+            />
+            <Store
+                name="Armory"
+                player={props.player}
+                items={game.armors}
+                can_buy={(n: number) => game.can_buy_armor(props.player, n)}
+                buy_item={props.buy_armor}
             />
             <button onClick={props.goto_next_city}>Travel to next city</button>
         </div>
@@ -258,6 +278,14 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
                 (weapon_index: number) => {
                     var state = props.state;
                     game.buy_weapon(state, weapon_index);
+                    props.setState({...state});
+                    focus();
+                }
+            }
+            buy_armor={
+                (armor_index: number) => {
+                    var state = props.state;
+                    game.buy_armor(state, armor_index);
                     props.setState({...state});
                     focus();
                 }
