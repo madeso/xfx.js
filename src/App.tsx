@@ -31,10 +31,11 @@ const Chapter = (props: {chapter: game.Chapter}) =>
 type Ref = React.RefObject<HTMLInputElement>;
 
 
-const Bar = (props: {range: game.Ranged}) =>
+const Bar = (props: {range: game.Ranged, type: string}) =>
 {
     const size = 200;
-    const bar_value_size = size * Math.max(0, props.range.current / props.range.max);
+    const scale = props.range.current / props.range.max;
+    const bar_value_size = size * Math.max(0, scale);
     const text_position = 3 + bar_value_size;
     return (
         <>
@@ -43,7 +44,7 @@ const Bar = (props: {range: game.Ranged}) =>
                     width: size
                 }
             }>
-                <div className="bar_value" style={
+                <div className={`bar_value bar_type_${props.type}`} style={
                     {
                         width: bar_value_size
                     }
@@ -81,7 +82,7 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 <div className="property">
                     <div className="key">HP</div>
                     <div className="value">
-                        <Bar range={props.monster.hp} />
+                        <Bar range={props.monster.hp} type="hp"/>
                     </div>
                 </div>
 
@@ -101,7 +102,14 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 <div className="property">
                     <div className="key">Health</div>
                     <div className="value">
-                        <Bar range={props.player.health} />
+                        <Bar range={props.player.health} type="hp"/>
+                    </div>
+                </div>
+
+                <div className="property">
+                    <div className="key">XP</div>
+                    <div className="value">
+                        <Bar range={props.player.xp} type="xp"/>
                     </div>
                 </div>
 

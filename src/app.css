@@ -50,9 +50,15 @@ button
     position: relative;
 }
 
-.bar_value
+.bar_type_hp
 {
     background-color: #f33;
+}
+
+
+.bar_type_xp
+{
+    background-color: #33f;
 }
 
 .bar_text
