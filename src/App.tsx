@@ -150,7 +150,7 @@ const ItemToBuy = (props: {name: string, cost: number, can_buy: () => boolean, b
     </button>;
 }
 
-const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player, buy_weapon: (n: number)=> void}) =>
+const Store = (props: {name: string, player: game.Player, buy_item: (index: number) => void, can_buy: (index: number) => boolean, items: game.Buyable[]}) =>
 {
     const [is_store_visible, set_store_visible] = React.useState(false);
     const [greeting, set_greeting] = React.useState("");
@@ -159,11 +159,40 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
         set_store_visible(true);
         set_greeting(game.get_store_greeting());
     };
-    const buy_weapon = (weapon_index: number) =>
-    {
-        props.buy_weapon(weapon_index);
-        set_store_visible(false);
-    };
+
+    return (<>
+        <button onClick={() => open_store()}>Go to {props.name}</button>
+        {
+            is_store_visible &&
+            <>
+                <div className="whiteout"/>
+                <div className="popup_base">
+                    <div className="popup">
+                        <div className="store_title">{props.name}</div>
+                        <div className="store_greeting">{greeting}</div>
+                        <div className="store_items">
+                            {
+                                props.items.map((item, i) =>
+                                {
+                                    return <ItemToBuy name={item.name} cost={item.gold} can_buy={() => props.can_buy(i)} buy={() => props.buy_item(i)}/>
+                                })
+                            }
+                        </div>
+                        <div className="inventory">
+                            <div className="current_gold">
+                                {props.player.gold}
+                            </div>
+                        </div>
+                        <button onClick={() => set_store_visible(false)}>Go back to city square</button>
+                    </div>
+                </div>
+            </>
+        }
+    </>);
+}
+
+const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city: ()=>void, player: game.Player, buy_weapon: (n: number)=> void}) =>
+{
     return <>
         <div className="log">
             {
@@ -173,38 +202,17 @@ const City = (props: {history: game.Chapter[], button_group: Ref, goto_next_city
                 })
             }
         </div>
-        {
-            is_store_visible &&
-                <>
-                    <div className="whiteout"/>
-                    <div className="popup_base">
-                        <div className="popup">
-                            <div className="store_title">Store</div>
-                            <div className="store_greeting">{greeting}</div>
-                            <div className="store_items">
-                                {
-                                    game.weapons.map((item, i) =>
-                                    {
-                                        return <ItemToBuy name={item.name} cost={item.gold} can_buy={() => game.can_buy_weapon(props.player, i)} buy={() => buy_weapon(i)}/>
-                                    })
-                                }
-                            </div>
-                            <div className="inventory">
-                                <div className="current_gold">
-                                    {props.player.gold}
-                                </div>
-                            </div>
-                            <button onClick={() => set_store_visible(false)}>Go back to city square</button>
-                        </div>
-                    </div>
-                </>
-        }
         <div className="actions" ref={props.button_group}>
-            <button onClick={() => open_store()}>Go to store</button>
+            <Store
+                name="Armory"
+                player={props.player}
+                items={game.weapons}
+                can_buy={(n: number) => game.can_buy_weapon(props.player, n)}
+                buy_item={props.buy_weapon}
+            />
             <button onClick={props.goto_next_city}>Travel to next city</button>
         </div>
-
-        </>;
+    </>;
 }
 
 const Game = (props: {state: game.State, setState: (state: game.State) => void}) => {

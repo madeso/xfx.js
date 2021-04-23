@@ -59,6 +59,12 @@ shop:
 */
 
 
+export interface Buyable
+{
+    name: string;
+    gold: number;
+}
+
 export class Armor
 {
     readonly name: string;
