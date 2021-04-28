@@ -10,6 +10,8 @@ This time I am more or less recreating the original with a few, but less complic
 ## todo
 
 * Make all magic and shout work
+* level up health
+* Make enemies appear based on current level
 * Rename shout to boast or something that won't be mixed up with shouts from elder scrolls
 * Make ui hover to the side instead on bottom
 * Change to tracery output instead of constant strings
