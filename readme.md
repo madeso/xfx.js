@@ -7,3 +7,10 @@ I wrote the first xf somewhere around 99/00 in ti83 basic for (and on) the ti83 
 Sometime around say 04/05 I tried to remake it in php and then later in c++ both significantly more advanced.
 This time I am more or less recreating the original with a few, but less complicated enhancements, as a learing project for "webdev".
 
+## todo
+
+* Make all magic and shout work
+* Rename shout to boast or something that won't be mixed up with shouts from elder scrolls
+* Make ui hover to the side instead on bottom
+* Change to tracery output instead of constant strings
+* Rewrite fixed battle to states with defend and attack bonuses
