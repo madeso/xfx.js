@@ -345,6 +345,37 @@ const player_hit = (state: State) =>
     }
 }
 
+const player_magic_now = (state: State) =>
+{
+    if(state.monster == null)
+    {
+        console.log("no monster")
+        return;
+    }
+
+    const damage = random(state.player.level);
+    state.monster.hp.current -= damage;
+    if(state.monster.hp.current <= 0)
+    {
+        log(state, `You killed ${state.monster.name} with lighnting dealing ${damage} damage.`);
+        const gold = random(state.monster.gold, 0);
+        if(gold > 0)
+        {
+            log(state, `You picked up ${gold} gold from the corpse.`);
+            state.player.gold += gold;
+        }
+        const xp = state.monster.xp; // make random?
+        state.player.xp.current += xp;
+        log(state, `You got ${xp} xp`);
+        check_for_level_up(state);
+        set_new_monster(state);
+    }
+    else
+    {
+        log(state, `You hit ${state.monster.name} with lightning dealing ${damage} damage.`);
+    }
+}
+
 const player_shout_now = (state: State) =>
 {
     const extra_health = random(state.player.level);
@@ -421,6 +452,22 @@ export const player_attack = (state: State) =>
         monster_hit(state);
     }
 };
+
+export const player_magic = (state: State) =>
+{
+    const c = random(1, 0);
+    if(c === 0)
+    {
+        monster_hit(state);
+        player_magic_now(state);
+    }
+    else
+    {
+        player_magic_now(state);
+        monster_hit(state);
+    }
+};
+
 
 export const player_shout = (state: State) =>
 {
