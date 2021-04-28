@@ -1,5 +1,4 @@
 import React from 'react';
-import { couldStartTrivia } from 'typescript';
 import './app.css';
 
 import * as game from './game'
@@ -60,7 +59,6 @@ const Bar = (props: {range: game.Ranged, type: string}) =>
 }
 
 const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void, button_group: Ref}) => {
-    const size = 200;
     return (
         <>
             <div className="log">

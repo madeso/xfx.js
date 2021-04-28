@@ -322,7 +322,7 @@ const player_hit = (state: State) =>
         return;
     }
 
-    const damage = calculate_physical_damage(state.monster.armor, random(state.player.level) + state.player.weapon.dmg);
+    const damage = calculate_physical_damage(state.monster.armor, random(state.player.level + state.player.weapon.dmg));
     state.monster.hp.current -= damage;
     if(state.monster.hp.current <= 0)
     {
@@ -399,7 +399,7 @@ const monster_hit = (state: State) =>
 export const player_attack = (state: State) =>
 {
     const c = random(1, 0);
-    if(c == 0)
+    if(c === 0)
     {
         monster_hit(state);
         player_hit(state);
