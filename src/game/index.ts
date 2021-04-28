@@ -345,6 +345,17 @@ const player_hit = (state: State) =>
     }
 }
 
+const player_shout_now = (state: State) =>
+{
+    const extra_health = random(state.player.level);
+    const old_health = state.player.health.current;
+    const new_health = Math.min(state.player.health.max, state.player.health.current + extra_health);
+    const health_gain = new_health - old_health;
+    state.player.health.current = new_health;
+
+    log(state, `You shouted and gained ${health_gain} hitpoints`);
+}
+
 const monster_deal_damage = (state: State, damage: number) =>
 {
     if(state.monster == null)
@@ -407,6 +418,21 @@ export const player_attack = (state: State) =>
     else
     {
         player_hit(state);
+        monster_hit(state);
+    }
+};
+
+export const player_shout = (state: State) =>
+{
+    const c = random(1, 0);
+    if(c === 0)
+    {
+        monster_hit(state);
+        player_shout_now(state);
+    }
+    else
+    {
+        player_shout_now(state);
         monster_hit(state);
     }
 };

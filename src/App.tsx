@@ -58,7 +58,7 @@ const Bar = (props: {range: game.Ranged, type: string}) =>
         );
 }
 
-const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[],onAttack:()=>void, button_group: Ref}) => {
+const MonsterFight = (props: { monster: game.Monster, player: game.Player, remainingMonsters: number, history: game.Chapter[], onAttack:()=>void, onShout:()=>void, button_group: Ref}) => {
     return (
         <>
             <div className="log">
@@ -92,7 +92,7 @@ const MonsterFight = (props: { monster: game.Monster, player: game.Player, remai
                 </div>
             </div>
             <div className="actions" ref={props.button_group}>
-                <button>Shout</button>
+                <button onClick={props.onShout}>Shout</button>
                 <button onClick={props.onAttack}>Attack</button>
                 <button>Magic</button>
             </div>
@@ -254,6 +254,12 @@ const Game = (props: {state: game.State, setState: (state: game.State) => void})
             onAttack={() => {
                 var state = props.state;
                 game.player_attack(state);
+                props.setState({...state});
+                focus();
+            }}
+            onShout={() => {
+                var state = props.state;
+                game.player_shout(state);
                 props.setState({...state});
                 focus();
             }}
