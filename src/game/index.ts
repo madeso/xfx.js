@@ -296,6 +296,12 @@ export const set_new_monster = (state: State) =>
 };
 
 
+const set_player_health_for_level = (state: State) =>
+{
+    state.player.health.max = 10 + state.player.level * 5;
+    state.player.health.current = state.player.health.max;
+}
+
 
 const check_for_level_up = (state: State) =>
 {
@@ -305,6 +311,7 @@ const check_for_level_up = (state: State) =>
         player.xp.current -= player.xp.max;
         player.xp.max *= 2;
         player.level += 1;
+        set_player_health_for_level(state);
         log(state, `You have reached level ${player.level}`);
     }
 }
@@ -489,6 +496,7 @@ export const new_game = () =>
     const state = new State( new City('city') );
 
     enter_new_city(state);
+    set_player_health_for_level(state);
 
     return state;
 };
